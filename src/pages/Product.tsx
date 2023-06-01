@@ -1,33 +1,34 @@
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
 import { Formik, Form, Field } from "formik";
-import {mockProductList} from '../services/api'
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { MyContext } from "../Context/MyContext";
+import { v4 as uuidv4 } from "uuid";
+import { CardForm } from "../styles/product";
 
 export const Product = () => {
-  const { productList, setProductList} = useContext(MyContext);
+  const randomId = uuidv4();
+  const numericId = randomId.replace(/\D/g, "");
+  const { productList, setProductList } = useContext(MyContext);
   const initialValues = {
     productName: "",
     description: "",
     brand: "",
     quantity: "",
     unit: "",
-    photo: null,
-  };  
-
-  const handleSubmit = (product:any) => {
-    setProductList([...productList, product]);
+    photo: undefined,
+    id: numericId,
   };
 
-  console.log(productList);
-  
+  const handleSubmit = (product: any) => {
+    setProductList([...productList, product]);
+  };
 
   return (
     <Container>
       <Navbar />
 
-      <div>
+      <CardForm>
         <h1>Cadastrar Produto</h1>
 
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -63,7 +64,7 @@ export const Product = () => {
             <button type="submit">Enviar</button>
           </Form>
         </Formik>
-      </div>
+      </CardForm>
     </Container>
   );
 };

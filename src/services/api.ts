@@ -83,7 +83,7 @@ export const mockSupplierList = [
 export const mockProductList = [
   {
     "productName": "Camera digital 12MP",
-    "description": "uma experiência única! Onde as fotos são reveladas instantaneamente à frente dos seus olhos (até 2 min. após o clique).",
+    "description": "Uma experiência única! Onde as fotos são reveladas instantaneamente à frente dos seus olhos (até 2 min. após o clique).",
     "brand": "Fujicam",
     "quantity": "qtd",
     "unit": "233",
@@ -92,7 +92,7 @@ export const mockProductList = [
   },
   {
     "productName": "Garrafa térmica 1L",
-    "description": "Produzido em aço inoxidável de qualidade, que conserva as bebidas quentes por até 12h e frias por até 24h, a linha completa possui filtro em aço inox e outras quatro cores diferentes para você escolher a que mais combina com você: branco, preto, rosa e vermelho. Durável e resistente, possui sistema de rosca com vedação à prova de vazamento, ampola térmica com dupla camada em aço inox 304 e filtro também em aço inox para folhas de chá. Acompanha embalagem presenteável.",
+    "description": "Produzido em aço inoxidável de qualidade, que conserva as bebidas quentes por até 12h e frias por até 24h, a linha completa possui filtro em aço inox e outras.",
     "brand": "Squez",
     "quantity": "qtd",
     "unit": "33",

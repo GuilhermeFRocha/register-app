@@ -24,8 +24,7 @@ time, mark, audio, video {
 }
 
 * {
-    font-family: 'Nunito', sans-serif;
-
+    font-family: 'Roboto', sans-serif !important;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
