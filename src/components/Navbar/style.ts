@@ -49,7 +49,7 @@ export const NavbarContainer = styled.div<NavbarProps>`
 
 export const ArrowNavbar = styled.button`
   position: absolute;
-  color: #046fff;
+  color: rgb(130, 87, 229);
   font-size: 1.5rem;
   top: 15px;
   right: -12px;
