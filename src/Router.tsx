@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Fornecedor } from "./pages/Fornecedor";
+import { Supplier } from "./pages/Supplier";
 import Home from "./pages/Home";
 import { Product } from "./pages/Product";
 import { ProductDetails } from "./pages/ProductDetails";
@@ -9,7 +9,7 @@ export default function Router() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/product" element={<Product />} />
-      <Route path="/fornecedor" element={<Fornecedor />} />
+      <Route path="/fornecedor" element={<Supplier />} />
       <Route path="/product/:id" element={<ProductDetails />} />
     </Routes>
   );
