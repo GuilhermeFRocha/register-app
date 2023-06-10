@@ -1,16 +1,23 @@
+import { useContext, useEffect, useState } from "react";
+import { Formik, Field } from "formik";
+import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid";
+
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
-import { Formik, Field } from "formik";
-import { useContext, useState } from "react";
-import { MyContext } from "../Context/MyContext";
-import { v4 as uuidv4 } from "uuid";
 import { CardForm, ErrorSend, FormProduct } from "../styles/product";
-import * as Yup from "yup";
+import { MyContext } from "../Context/MyContext";
+import { Popup } from "../components/Popup";
 
 export const Product = () => {
+  const { productList, setProductList } = useContext(MyContext);
+  const [showMessage, setShowMessage] = useState("");
+  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const randomId = uuidv4();
   const numericId = randomId.replace(/\D/g, "");
-  const { productList, setProductList } = useContext(MyContext);
+
   const initialValues = {
     productName: "",
     description: "",
@@ -29,6 +36,7 @@ export const Product = () => {
     unit: Yup.string().required("Campo obrigatório"),
     photo: Yup.mixed().required("Campo obrigatório"),
   });
+
   const handleSubmit = (product: any) => {
     const isProductExists = productList.some(
       (item) =>
@@ -39,10 +47,35 @@ export const Product = () => {
 
     if (!isProductExists) {
       setProductList([...productList, product]);
+      setShowMessage("success");
+      setShowProgressBar(true);
     } else {
-      console.log("Produto já existe na lista");
+      setShowMessage("error");
+      setShowProgressBar(true);
     }
+
+    setTimeout(() => {
+      setShowMessage("");
+      setShowProgressBar(false);
+      setProgress(0);
+    }, 3000);
   };
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    if (showProgressBar && progress < 100) {
+      timer = setInterval(() => {
+        setProgress((prevProgress) =>
+          prevProgress >= 100 ? 100 : prevProgress + 1
+        );
+      }, 11);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [showProgressBar, progress]);
 
   return (
     <Container>
@@ -105,6 +138,13 @@ export const Product = () => {
             </FormProduct>
           )}
         </Formik>
+
+        {showMessage && (
+          <Popup
+            messageType={showMessage}
+            progress={showProgressBar ? progress : null}
+          />
+        )}
       </CardForm>
     </Container>
   );

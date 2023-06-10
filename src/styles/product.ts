@@ -4,7 +4,8 @@ import { ErrorMessage } from "formik";
 
 export const CardForm = styled.div`
   width: 100%;
-  padding-top: 40px;
+  padding: 40px 0;
+  position: relative;
 
   h2 {
     text-align: center;
@@ -23,7 +24,6 @@ export const FormProduct = styled(Form)`
   padding: 40px;
   background-color: rgb(32, 32, 36);
   border-radius: 5px;
-
 
   div {
     width: max-content;
@@ -63,7 +63,7 @@ export const FormProduct = styled(Form)`
   }
 
   button {
-      width: 100%;
+    width: 100%;
     background-color: rgb(130, 87, 229);
     border: none;
     border-radius: 15px;
@@ -75,7 +75,8 @@ export const FormProduct = styled(Form)`
     color: rgb(32, 32, 36);
 
     &:hover {
-      opacity: 0.8;transition: 0.2s
+      opacity: 0.8;
+      transition: 0.2s;
     }
   }
 `;

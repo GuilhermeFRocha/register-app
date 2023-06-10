@@ -7,7 +7,9 @@ import {
   ButtonSupplier,
   CardFormSupplier,
   ContainerSupplier,
+  ContentAdress,
   ContentSupplier,
+  ErrorSendSupplier,
   ProductSupplier,
 } from "../styles/supplier";
 import * as Yup from "yup";
@@ -66,27 +68,37 @@ export const Supplier = () => {
               <div>
                 <label htmlFor="nome">Nome</label>
                 <Field type="text" id="nome" name="nome" />
+               <ErrorSendSupplier name="nome" component="div" />
               </div>
               <div>
                 <label htmlFor="cnpj">CNPJ</label>
                 <Field type="text" id="cnpj" name="cnpj" />
+               <ErrorSendSupplier name="cnpj" component="div" />
               </div>
-              <div>
-                <label htmlFor="cep">CEP</label>
-                <Field type="text" id="cep" name="cep" />
-              </div>
-              <div>
-                <label htmlFor="street">Rua</label>
-                <Field type="text" id="street" name="street" />
-              </div>
-              <div>
-                <label htmlFor="state">Estado</label>
-                <Field type="text" id="state" name="state" />
-              </div>
-              <div>
-                <label htmlFor="city">Cidade</label>
-                <Field type="text" id="city" name="city" />
-              </div>
+              <ContentAdress>
+                <div>
+                  <label htmlFor="cep">CEP</label>
+                  <Field type="text" id="cep" name="cep" />
+                 <ErrorSendSupplier name="cep" component="div" />
+                </div>
+                <div>
+                  <label htmlFor="street">Rua</label>
+                  <Field type="text" id="street" name="street" />
+                 <ErrorSendSupplier name="street" component="div" />
+                </div>
+              </ContentAdress>
+              <ContentAdress>
+                <div>
+                  <label htmlFor="state">Estado</label>
+                  <Field type="text" id="state" name="state" />
+                 <ErrorSendSupplier name="state" component="div" />
+                </div>
+                <div>
+                  <label htmlFor="city">Cidade</label>
+                  <Field type="text" id="city" name="city" />
+                 <ErrorSendSupplier name="city" component="div" />
+                </div>
+              </ContentAdress>
             </ContentSupplier>
             <ContainerSupplier>
               <h3 className="titleSupplier">Adicionar Produtos</h3>

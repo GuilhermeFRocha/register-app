@@ -20,48 +20,21 @@ export const CardFormSupplier = styled.div`
 `;
 
 export const ContentSupplier = styled(Form)`
-  width: max-content;
-  margin: 0 auto;
-  grid-template-columns: 1fr 1fr;
-  border: 2px solid black;
-  padding: 40px;
-  background-color: rgb(32, 32, 36);
-  border-radius: 5px;
+padding: 0 80px;
 
   div {
-    width: max-content;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 25px;
-    flex-direction: column;
-    margin: 0 auto;
+    display: grid;
+    padding: 10px 0;
 
     label {
-      color: rgb(255, 255, 255);
-      font-size: 1rem;
+      padding-bottom: 5px;
     }
 
     input {
-      border-radius: 5px;
+      padding: 10px ;
       font-size: 1rem;
-      background: rgb(18, 18, 20);
-      border-color: rgb(18, 18, 20);
-      color: rgb(255, 255, 255);
-      padding: 5px;
-    }
-
-    select {
       border-radius: 5px;
-      font-size: 0.8rem;
-      padding: 2px;
-      background: rgb(18, 18, 20);
-      border-color: rgb(18, 18, 20);
-      color: rgb(255, 255, 255);
-    }
-
-    #photo {
-      background-color: transparent;
+      height: max-content;
     }
   }
 
@@ -86,6 +59,7 @@ export const ContentSupplier = styled(Form)`
 export const ErrorSendSupplier = styled(ErrorMessage)`
   padding: 0 !important;
   color: red;
+  padding-top: 5px !important;
 `;
 
 export const ContainerSupplier = styled.div`
@@ -175,3 +149,15 @@ export const ButtonSupplier = styled.button<SupplierProps>`
     transition: 0.2s;
   }
 `;
+
+
+export const ContentAdress = styled.div `
+  display: flex !important;
+  align-items: center;
+  gap: 30px;
+
+  div {
+    width: 100%;
+  }
+`
+
