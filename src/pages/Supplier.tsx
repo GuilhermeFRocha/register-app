@@ -16,12 +16,16 @@ import * as Yup from "yup";
 import { Popup } from "../components/Popup";
 
 const validationSchema = Yup.object().shape({
-  nome: Yup.string().required("Campo obrigatório"),
-  cnpj: Yup.string().required("Campo obrigatório"),
-  cep: Yup.string().required("Campo obrigatório"),
-  street: Yup.string().required("Campo obrigatório"),
-  state: Yup.string().required("Campo obrigatório"),
-  city: Yup.string().required("Campo obrigatório"),
+  nome: Yup.string().required("O nome é obrigatório"),
+  cnpj: Yup.string()
+    .required("O CNPJ é obrigatório.")
+    .min(12, "O campo deve ter no minimo 11 caracteres"),
+  cep: Yup.number()
+    .typeError("O CEP deve conter apenas números.")
+    .required("O CEP é obrigatório"),
+  street: Yup.string().required("A rua é obrigatória"),
+  state: Yup.string().required("O estado é obrigatório"),
+  city: Yup.string().required("A cidade é obrigatória"),
 });
 
 export const Supplier = () => {
@@ -111,7 +115,7 @@ export const Supplier = () => {
                 </div>
                 <div>
                   <label htmlFor="cnpj">CNPJ</label>
-                  <Field type="text" id="cnpj" name="cnpj" />
+                  <Field type="text" id="cnpj" maxLength={12} name="cnpj" />
                   <ErrorSendSupplier name="cnpj" component="div" />
                 </div>
                 <ContentAdress>

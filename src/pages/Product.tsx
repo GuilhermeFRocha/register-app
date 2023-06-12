@@ -108,18 +108,18 @@ export const Product = () => {
                 <ErrorSend name="brand" component="div" />
               </div>
               <div>
-                <label htmlFor="quantity">Quantidade</label>
-                <Field as="select" id="quantity" name="quantity">
+                <label htmlFor="unit">Unidade de Medida</label>
+                <Field as="select" id="unit" name="unit">
                   <option value="">Selecione</option>
                   <option value="cm">cm</option>
                   <option value="kg">kg</option>
                 </Field>
-                <ErrorSend name="quantity" component="div" />
+                <ErrorSend name="unit" component="div" />
               </div>
               <div>
-                <label htmlFor="unit">Unidade de Medida</label>
-                <Field type="text" id="unit" name="unit" />
-                <ErrorSend name="unit" component="div" />
+                <label htmlFor="quantity">Quantidade</label>
+                <Field type="text" id="quantity" name="quantity" />
+                <ErrorSend name="quantity" component="div" />
               </div>
               <div>
                 <label htmlFor="photo">Foto</label>
