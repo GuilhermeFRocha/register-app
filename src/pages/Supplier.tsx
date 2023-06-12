@@ -1,7 +1,7 @@
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
 import { Formik, Field, Form } from "formik";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/MyContext";
 import {
   ButtonSupplier,
@@ -13,6 +13,7 @@ import {
   ProductSupplier,
 } from "../styles/supplier";
 import * as Yup from "yup";
+import { Popup } from "../components/Popup";
 
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required("Campo obrigatório"),
@@ -25,6 +26,9 @@ const validationSchema = Yup.object().shape({
 
 export const Supplier = () => {
   const { productList, FornList, setFornList } = useContext(MyContext);
+  const [showMessage, setShowMessage] = useState("");
+  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const initialValues = {
     nome: "",
@@ -54,10 +58,35 @@ export const Supplier = () => {
 
       const updatedValues = { ...values, products: selectedProducts };
       setFornList([...FornList, updatedValues]);
+      setShowMessage("success");
+      setShowProgressBar(true);
     } else {
-      console.log("error");
+      setShowMessage("error");
+      setShowProgressBar(true);
     }
+
+    setTimeout(() => {
+      setShowMessage("");
+      setShowProgressBar(false);
+      setProgress(0);
+    }, 3000);
   };
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    if (showProgressBar && progress < 100) {
+      timer = setInterval(() => {
+        setProgress((prevProgress) =>
+          prevProgress >= 100 ? 100 : prevProgress + 1
+        );
+      }, 18);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [showProgressBar, progress]);
 
   return (
     <Container>
@@ -133,6 +162,14 @@ export const Supplier = () => {
             <ButtonSupplier type="submit">Enviar</ButtonSupplier>
           </Form>
         </Formik>
+
+        {showMessage && (
+          <Popup
+            messageType={showMessage}
+            progress={showProgressBar ? progress : null}
+            title={"Fornecedor"}
+          />
+        )}
       </CardFormSupplier>
     </Container>
   );

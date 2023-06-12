@@ -69,7 +69,7 @@ export const Product = () => {
         setProgress((prevProgress) =>
           prevProgress >= 100 ? 100 : prevProgress + 1
         );
-      }, 11);
+      }, 18);
     }
 
     return () => {
@@ -89,7 +89,7 @@ export const Product = () => {
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
-          {({ setFieldValue }) => (
+          {({ setFieldValue, isValid }) => (
             <FormProduct>
               <div>
                 <label htmlFor="productName">Nome do Produto</label>
@@ -143,6 +143,7 @@ export const Product = () => {
           <Popup
             messageType={showMessage}
             progress={showProgressBar ? progress : null}
+            title={"Produto"}
           />
         )}
       </CardForm>

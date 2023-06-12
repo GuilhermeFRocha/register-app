@@ -78,9 +78,13 @@ export const FormProduct = styled(Form)`
       opacity: 0.8;
       transition: 0.2s;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 `;
 export const ErrorSend = styled(ErrorMessage)`
   padding: 0 !important;
   color: red;
-`
+`;

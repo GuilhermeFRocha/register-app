@@ -2,14 +2,14 @@ import { LinearProgress } from "@mui/material";
 import { AiFillCheckCircle, AiFillExclamationCircle } from "react-icons/ai";
 import { PopupMessage } from "./style";
 
-export function Popup({ messageType, progress }: any) {
+export function Popup({ messageType, progress, title }: any) {
   return (
     <div>
       {messageType === "success" && (
         <PopupMessage>
           <div>
             <AiFillCheckCircle color="green" size={20} />
-            <p>Produto cadastrado com sucesso!</p>
+            <p>{`${title} cadastrado com sucesso!`}</p>
           </div>
           <nav>
             {progress && (
@@ -27,7 +27,7 @@ export function Popup({ messageType, progress }: any) {
         <PopupMessage>
           <div>
             <AiFillExclamationCircle color="red" size={20} />
-            <p>Já existe um produto com esse nome!</p>
+            <p>{`Já existe um ${title} com esse nome!`}</p>
           </div>
           <nav>
             {progress && (
