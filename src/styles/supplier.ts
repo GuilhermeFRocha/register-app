@@ -20,7 +20,7 @@ export const CardFormSupplier = styled.div`
 `;
 
 export const ContentSupplier = styled(Form)`
-padding: 0 80px;
+  padding: 0 80px;
 
   div {
     display: grid;
@@ -31,7 +31,7 @@ padding: 0 80px;
     }
 
     input {
-      padding: 10px ;
+      padding: 10px;
       font-size: 1rem;
       border-radius: 5px;
       height: max-content;
@@ -53,6 +53,9 @@ padding: 0 80px;
     &:hover {
       opacity: 0.8;
       transition: 0.2s;
+    }
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 `;
@@ -148,10 +151,13 @@ export const ButtonSupplier = styled.button<SupplierProps>`
     opacity: 0.9;
     transition: 0.2s;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
-
-export const ContentAdress = styled.div `
+export const ContentAdress = styled.div`
   display: flex !important;
   align-items: center;
   gap: 30px;
@@ -159,5 +165,4 @@ export const ContentAdress = styled.div `
   div {
     width: 100%;
   }
-`
-
+`;

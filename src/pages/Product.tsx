@@ -88,6 +88,7 @@ export const Product = () => {
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          validateOnMount
         >
           {({ setFieldValue, isValid }) => (
             <FormProduct>
@@ -134,7 +135,9 @@ export const Product = () => {
 
                 <ErrorSend name="photo" component="div" />
               </div>
-              <button type="submit">Enviar</button>
+              <button type="submit" disabled={!isValid}>
+                Enviar
+              </button>
             </FormProduct>
           )}
         </Formik>
