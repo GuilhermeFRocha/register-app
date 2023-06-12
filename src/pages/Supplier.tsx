@@ -37,18 +37,26 @@ export const Supplier = () => {
   };
 
   const handleSubmit = (values: any) => {
-    const selectedProducts = values.products.map((productId: string) => {
-      const product = productList.find((p) => p.id === productId);
-      return {
-        id: productId,
-        productName: product.productName,
-        description: product.description,
-        photo: product.photo,
-      };
-    });
+    const isProductExists = FornList.some(
+      (item) => item.nome === values.nome || item.cnpj === values.cnpj
+    );
 
-    const updatedValues = { ...values, products: selectedProducts };
-    setFornList([...FornList, updatedValues]);
+    if (!isProductExists) {
+      const selectedProducts = values.products.map((productId: string) => {
+        const product = productList.find((p) => p.id === productId);
+        return {
+          id: productId,
+          productName: product.productName,
+          description: product.description,
+          photo: product.photo,
+        };
+      });
+
+      const updatedValues = { ...values, products: selectedProducts };
+      setFornList([...FornList, updatedValues]);
+    } else {
+      console.log("error");
+    }
   };
 
   return (
@@ -68,35 +76,35 @@ export const Supplier = () => {
               <div>
                 <label htmlFor="nome">Nome</label>
                 <Field type="text" id="nome" name="nome" />
-               <ErrorSendSupplier name="nome" component="div" />
+                <ErrorSendSupplier name="nome" component="div" />
               </div>
               <div>
                 <label htmlFor="cnpj">CNPJ</label>
                 <Field type="text" id="cnpj" name="cnpj" />
-               <ErrorSendSupplier name="cnpj" component="div" />
+                <ErrorSendSupplier name="cnpj" component="div" />
               </div>
               <ContentAdress>
                 <div>
                   <label htmlFor="cep">CEP</label>
                   <Field type="text" id="cep" name="cep" />
-                 <ErrorSendSupplier name="cep" component="div" />
+                  <ErrorSendSupplier name="cep" component="div" />
                 </div>
                 <div>
                   <label htmlFor="street">Rua</label>
                   <Field type="text" id="street" name="street" />
-                 <ErrorSendSupplier name="street" component="div" />
+                  <ErrorSendSupplier name="street" component="div" />
                 </div>
               </ContentAdress>
               <ContentAdress>
                 <div>
                   <label htmlFor="state">Estado</label>
                   <Field type="text" id="state" name="state" />
-                 <ErrorSendSupplier name="state" component="div" />
+                  <ErrorSendSupplier name="state" component="div" />
                 </div>
                 <div>
                   <label htmlFor="city">Cidade</label>
                   <Field type="text" id="city" name="city" />
-                 <ErrorSendSupplier name="city" component="div" />
+                  <ErrorSendSupplier name="city" component="div" />
                 </div>
               </ContentAdress>
             </ContentSupplier>
