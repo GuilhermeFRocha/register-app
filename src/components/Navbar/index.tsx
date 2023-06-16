@@ -36,7 +36,7 @@ export const Navbar = () => {
       <ul>
         <li>
           <Link to="/">
-            <AiFillHome />
+            <AiFillHome color={`${isActivePage("/") && "#8257e5"}`} />
             <span
               className={`${isOpen ? "show" : "hide"} ${classnames({
                 active: isActivePage("/"),
@@ -48,7 +48,9 @@ export const Navbar = () => {
         </li>
         <li>
           <Link to="/product">
-            <AiTwotoneShopping />
+            <AiTwotoneShopping
+              color={`${isActivePage("/product") && "#8257e5"}`}
+            />
             <span
               className={`${isOpen ? "show" : "hide"} ${classnames({
                 active: isActivePage("/product"),
@@ -60,7 +62,9 @@ export const Navbar = () => {
         </li>
         <li>
           <Link to="/fornecedor">
-            <AiOutlineSolution />
+            <AiOutlineSolution
+              color={`${isActivePage("/fornecedor") && "#8257e5"}`}
+            />
             <span
               className={`${isOpen ? "show" : "hide"} ${classnames({
                 active: isActivePage("/fornecedor"),
