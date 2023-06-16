@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Formik, Field } from "formik";
+import { useContext, useEffect, useState, useRef } from "react";
+import { Formik, Field, FormikProps, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,6 +8,25 @@ import { Container } from "../styles/home";
 import { CardForm, ErrorSend, FormProduct } from "../styles/product";
 import { MyContext } from "../Context/MyContext";
 import { Popup } from "../components/Popup";
+
+const validationSchema = Yup.object().shape({
+  productName: Yup.string().required("O nome é obrigatório"),
+  description: Yup.string().required("A descrição é obrigatória"),
+  brand: Yup.string().required("A marca é obrigatória"),
+  unit: Yup.string().required("A unidade é obrigatória"),
+  quantity: Yup.string().required("A quantidade é obrigatória"),
+  photo: Yup.mixed().required("A foto é obrigatória"),
+});
+
+interface ProductFormValues {
+  productName: string;
+  description: string;
+  brand: string;
+  unit: string;
+  quantity: string;
+  photo: string;
+  id: string;
+}
 
 export const Product = () => {
   const { productList, setProductList } = useContext(MyContext);
@@ -22,22 +41,15 @@ export const Product = () => {
     productName: "",
     description: "",
     brand: "",
-    quantity: "",
     unit: "",
+    quantity: "",
     photo: "",
     id: numericId,
   };
 
-  const validationSchema = Yup.object().shape({
-    productName: Yup.string().required("Campo obrigatório"),
-    description: Yup.string().required("Campo obrigatório"),
-    brand: Yup.string().required("Campo obrigatório"),
-    quantity: Yup.string().required("Campo obrigatório"),
-    unit: Yup.string().required("Campo obrigatório"),
-    photo: Yup.mixed().required("Campo obrigatório"),
-  });
+  const formikRef = useRef<FormikProps<ProductFormValues>>(null);
 
-  const handleSubmit = (product: any) => {
+  const handleSubmit = (product: ProductFormValues) => {
     const isProductExists = productList.some(
       (item) =>
         item.productName === product.productName ||
@@ -49,6 +61,10 @@ export const Product = () => {
       setProductList([...productList, product]);
       setShowMessage("success");
       setShowProgressBar(true);
+
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
     } else {
       setShowMessage("error");
       setShowProgressBar(true);
@@ -88,7 +104,7 @@ export const Product = () => {
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
-          validateOnMount
+          innerRef={formikRef}
         >
           {({ setFieldValue, isValid }) => (
             <FormProduct>
@@ -118,7 +134,7 @@ export const Product = () => {
               </div>
               <div>
                 <label htmlFor="quantity">Quantidade</label>
-                <Field type="text" id="quantity" name="quantity" />
+                <Field type="number" id="quantity" name="quantity" />
                 <ErrorSend name="quantity" component="div" />
               </div>
               <div>
@@ -127,9 +143,8 @@ export const Product = () => {
                   type="file"
                   id="photo"
                   name="photo"
-                  onChange={(event: any) => {
-                    setFieldValue("photo", event.currentTarget.files[0]);
-                    console.log(event);
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setFieldValue("photo", event.currentTarget.files?.[0]);
                   }}
                 />
 

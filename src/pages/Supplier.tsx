@@ -1,7 +1,7 @@
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
-import { Formik, Field, Form } from "formik";
-import { useContext, useEffect, useState } from "react";
+import { Formik, Field, Form, FormikProps } from "formik";
+import { useContext, useEffect, useState, useRef } from "react";
 import { MyContext } from "../Context/MyContext";
 import {
   ButtonSupplier,
@@ -19,14 +19,32 @@ const validationSchema = Yup.object().shape({
   nome: Yup.string().required("O nome é obrigatório"),
   cnpj: Yup.string()
     .required("O CNPJ é obrigatório.")
-    .min(12, "O campo deve ter no minimo 11 caracteres"),
-  cep: Yup.number()
-    .typeError("O CEP deve conter apenas números.")
-    .required("O CEP é obrigatório"),
+    .min(15, "O campo deve ter no minimo 15 caracteres"),
+  cep: Yup.string()
+    .required("O Cep é obrigatório.")
+    .min(8, "O campo deve ter no minimo 8 caracteres"),
   street: Yup.string().required("A rua é obrigatória"),
   state: Yup.string().required("O estado é obrigatório"),
   city: Yup.string().required("A cidade é obrigatória"),
 });
+
+interface Product {
+  id: string;
+  productName: string;
+  description: string;
+  photo: string;
+  productId: string;
+}
+
+interface FormValues {
+  nome: string;
+  cnpj: string;
+  cep: string;
+  street: string;
+  state: string;
+  city: string;
+  products: string[];
+}
 
 export const Supplier = () => {
   const { productList, FornList, setFornList } = useContext(MyContext);
@@ -44,7 +62,9 @@ export const Supplier = () => {
     products: [],
   };
 
-  const handleSubmit = (values: any) => {
+  const formikRef = useRef<FormikProps<FormValues>>(null);
+
+  const handleSubmit = (values: FormValues) => {
     const isProductExists = FornList.some(
       (item) => item.nome === values.nome || item.cnpj === values.cnpj
     );
@@ -64,6 +84,9 @@ export const Supplier = () => {
       setFornList([...FornList, updatedValues]);
       setShowMessage("success");
       setShowProgressBar(true);
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
     } else {
       setShowMessage("error");
       setShowProgressBar(true);
@@ -92,6 +115,24 @@ export const Supplier = () => {
     };
   }, [showProgressBar, progress]);
 
+  function formatCNPJ(value: string) {
+    const cnpj = value;
+    const formattedCnpj = cnpj
+      .replace(/[^\d]/g, "")
+      .replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+
+    return formattedCnpj;
+  }
+
+  function formatCEP(value: string) {
+    const cep = value;
+    const formattedcep = cep
+      .replace(/[^\d]/g, "")
+      .replace(/(\d{5})(\d{3})/, "$1-$2");
+
+    return formattedcep;
+  }
+
   return (
     <Container>
       <Navbar />
@@ -104,8 +145,9 @@ export const Supplier = () => {
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
           validateOnMount
+          innerRef={formikRef}
         >
-          {({ isValid }) => (
+          {({ isValid, setFieldValue }) => (
             <Form>
               <ContentSupplier>
                 <div>
@@ -115,13 +157,31 @@ export const Supplier = () => {
                 </div>
                 <div>
                   <label htmlFor="cnpj">CNPJ</label>
-                  <Field type="text" id="cnpj" maxLength={12} name="cnpj" />
+                  <Field
+                    type="text"
+                    id="cnpj"
+                    maxLength={18}
+                    name="cnpj"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const formattedValue = formatCNPJ(e.target.value);
+                      setFieldValue("cnpj", formattedValue);
+                    }}
+                  />
                   <ErrorSendSupplier name="cnpj" component="div" />
                 </div>
                 <ContentAdress>
                   <div>
                     <label htmlFor="cep">CEP</label>
-                    <Field type="text" id="cep" name="cep" />
+                    <Field
+                      type="text"
+                      id="cep"
+                      name="cep"
+                      maxLength={9}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const formattedValue = formatCEP(e.target.value);
+                        setFieldValue("cep", formattedValue);
+                      }}
+                    />
                     <ErrorSendSupplier name="cep" component="div" />
                   </div>
                   <div>
@@ -147,10 +207,10 @@ export const Supplier = () => {
                 <h3 className="titleSupplier">Adicionar Produtos</h3>
 
                 <ProductSupplier>
-                  {productList.map((product) => (
+                  {productList.map((product: Product) => (
                     <div key={product.id} className="productSupplier">
                       <h3>{product.productName}</h3>
-                      <img src={product.photo} alt="" />
+                      <img src={product.photo} alt="produto" />
                       <p>{product.description}</p>
                       <div style={{ border: "none" }}>
                         <Field
