@@ -14,6 +14,8 @@ import {
 } from "../styles/supplier";
 import * as Yup from "yup";
 import { Popup } from "../components/Popup";
+import { database, ref, get } from "../services/firebase";
+import { fetchProduct, fetchSupply } from "../services/api";
 
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required("O nome é obrigatório"),
@@ -47,10 +49,11 @@ interface FormValues {
 }
 
 export const Supplier = () => {
-  const { productList, FornList, setFornList } = useContext(MyContext);
+  // const { productList, FornList, setFornList } = useContext(MyContext);
   const [showMessage, setShowMessage] = useState("");
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [productLists, setProductList] = useState([]);
 
   const initialValues = {
     nome: "",
@@ -65,32 +68,32 @@ export const Supplier = () => {
   const formikRef = useRef<FormikProps<FormValues>>(null);
 
   const handleSubmit = (values: FormValues) => {
-    const isProductExists = FornList.some(
-      (item) => item.nome === values.nome || item.cnpj === values.cnpj
-    );
+    // const isProductExists = FornList.some(
+    //   (item) => item.nome === values.nome || item.cnpj === values.cnpj
+    // );
 
-    if (!isProductExists) {
-      const selectedProducts = values.products.map((productId: string) => {
-        const product = productList.find((p) => p.id === productId);
-        return {
-          id: productId,
-          productName: product.productName,
-          description: product.description,
-          photo: product.photo,
-        };
-      });
+    // if (!isProductExists && values.products.length > 0) {
+    // const selectedProducts = values.products.map((productId: string) => {
+    //   const product = productList.find((p) => p.id === productId);
+    //   return {
+    //     id: productId,
+    //     productName: product.productName,
+    //     description: product.description,
+    //     photo: product.photo,
+    //   };
+    // });
 
-      const updatedValues = { ...values, products: selectedProducts };
-      setFornList([...FornList, updatedValues]);
-      setShowMessage("success");
-      setShowProgressBar(true);
-      if (formikRef.current) {
-        formikRef.current.resetForm();
-      }
-    } else {
-      setShowMessage("error");
-      setShowProgressBar(true);
-    }
+    //   const updatedValues = { ...values, products: selectedProducts };
+    //   setFornList([...FornList, updatedValues]);
+    //   setShowMessage("success");
+    //   setShowProgressBar(true);
+    //   if (formikRef.current) {
+    //     formikRef.current.resetForm();
+    //   }
+    // } else {
+    //   setShowMessage("error");
+    //   setShowProgressBar(true);
+    // }
 
     setTimeout(() => {
       setShowMessage("");
@@ -133,6 +136,12 @@ export const Supplier = () => {
     return formattedcep;
   }
 
+  useEffect(() => {
+    fetchProduct()
+      .then((data) => setProductList(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <Container>
       <Navbar />
@@ -147,7 +156,7 @@ export const Supplier = () => {
           validateOnMount
           innerRef={formikRef}
         >
-          {({ isValid, setFieldValue }) => (
+          {({ isValid, setFieldValue, values }) => (
             <Form>
               <ContentSupplier>
                 <div>
@@ -207,7 +216,7 @@ export const Supplier = () => {
                 <h3 className="titleSupplier">Adicionar Produtos</h3>
 
                 <ProductSupplier>
-                  {productList.map((product: Product) => (
+                  {productLists.map((product: Product) => (
                     <div key={product.id} className="productSupplier">
                       <h3>{product.productName}</h3>
                       <img src={product.photo} alt="produto" />
@@ -225,7 +234,10 @@ export const Supplier = () => {
                   ))}
                 </ProductSupplier>
               </ContainerSupplier>
-              <ButtonSupplier type="submit" disabled={!isValid}>
+              <ButtonSupplier
+                type="submit"
+                disabled={!isValid || values.products.length <= 0}
+              >
                 Enviar
               </ButtonSupplier>
             </Form>

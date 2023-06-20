@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { Formik, Field, FormikProps, ErrorMessage } from "formik";
+import { useEffect, useState, useRef } from "react";
+import { Formik, Field, FormikProps } from "formik";
 import * as Yup from "yup";
-import { v4 as uuidv4 } from "uuid";
 
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
 import { CardForm, ErrorSend, FormProduct } from "../styles/product";
-import { MyContext } from "../Context/MyContext";
 import { Popup } from "../components/Popup";
+import { createProduct, fetchProduct } from "../services/api";
 
 const validationSchema = Yup.object().shape({
   productName: Yup.string().required("O nome é obrigatório"),
@@ -29,13 +28,10 @@ interface ProductFormValues {
 }
 
 export const Product = () => {
-  const { productList, setProductList } = useContext(MyContext);
   const [showMessage, setShowMessage] = useState("");
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  const randomId = uuidv4();
-  const numericId = randomId.replace(/\D/g, "");
+  const [productList, setProductList] = useState([]);
 
   const initialValues = {
     productName: "",
@@ -44,21 +40,31 @@ export const Product = () => {
     unit: "",
     quantity: "",
     photo: "",
-    id: numericId,
+    id: "",
   };
+
+  useEffect(() => {
+    fetchProduct()
+      .then((data) => {
+        setProductList(data);
+        const newId = (data.length + 1).toString();
+        formikRef.current?.setFieldValue("id", newId);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   const formikRef = useRef<FormikProps<ProductFormValues>>(null);
 
   const handleSubmit = (product: ProductFormValues) => {
     const isProductExists = productList.some(
-      (item) =>
+      (item: any) =>
         item.productName === product.productName ||
         item.description === product.description ||
         item.photo === product.photo
     );
 
     if (!isProductExists) {
-      setProductList([...productList, product]);
+      createProduct([...productList, product]);
       setShowMessage("success");
       setShowProgressBar(true);
 

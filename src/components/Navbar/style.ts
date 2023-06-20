@@ -13,6 +13,18 @@ export const NavbarContainer = styled.div<NavbarProps>`
   width: ${({ isOpen }: any) => (isOpen ? "200px" : "20px")};
   transition: all 0.3s ease-in-out;
 
+  img {
+    display: flex;
+    margin: 0 auto;
+    padding-bottom: 25px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  img.hide {
+    opacity: 0;
+    width: 10px;
+  }
+
   ul {
     list-style-type: none;
     padding: 0;

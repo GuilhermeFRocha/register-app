@@ -14,6 +14,8 @@ import {
 import { MyContext } from "../../Context/MyContext";
 import classnames from "classnames";
 
+import Logo from "../../assets/logo.svg";
+
 export const Navbar = () => {
   const { isOpen, setIsOpen } = useContext(MyContext);
   const location = useLocation();
@@ -34,6 +36,12 @@ export const Navbar = () => {
   return (
     <NavbarContainer isOpen={isOpen}>
       <ul>
+        <img
+          src={Logo}
+          alt=""
+          width={80}
+          className={`${isOpen ? "show" : "hide"}`}
+        />
         <li>
           <Link to="/">
             <AiFillHome color={`${isActivePage("/") && "#8257e5"}`} />

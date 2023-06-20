@@ -1,9 +1,20 @@
-import { useContext } from "react";
-import { MyContext } from "../../Context/MyContext";
+import { useEffect, useState } from "react";
 import { ContainerProd, ContainerSupp, LinkProduct, ListProd } from "./style";
+import { fetchSupply, fetchProduct } from "../../services/api";
 
-export function Product({ products }: any) {
-  const { FornList } = useContext(MyContext);
+export function Product() {
+  const [supplyList, setSupplyList] = useState([]);
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    fetchSupply()
+      .then((data) => setSupplyList(data))
+      .catch((error) => console.error(error));
+
+    fetchProduct()
+      .then((data) => setProductList(data))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <ListProd>
@@ -11,7 +22,7 @@ export function Product({ products }: any) {
 
       <h2>Lista de produtos:</h2>
       <ContainerProd>
-        {products.map((product: any) => (
+        {productList.map((product: any) => (
           <LinkProduct to={`/product/${product.id}`} key={product.id}>
             <h2>{product.productName}</h2>
             <img src={product.photo} alt="" />
@@ -23,10 +34,10 @@ export function Product({ products }: any) {
       <h2>Lista de fornecedores:</h2>
 
       <ContainerSupp>
-        {FornList.map((supp) => (
+        {supplyList.map((supp: any) => (
           <div key={supp.nome}>
             <p>{supp.nome}</p>
-            <span>{`Produtos: ${supp.products.length}`}</span>
+            <span>{`Produtos: ${supp.products?.length || 0}`}</span>
           </div>
         ))}
       </ContainerSupp>
