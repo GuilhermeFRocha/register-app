@@ -8,6 +8,8 @@ import { CardForm, ErrorSend, FormProduct } from "../styles/product";
 import { Popup } from "../components/Popup";
 import { createProduct, fetchProduct } from "../services/api";
 
+import { v4 as uuidv4 } from "uuid";
+
 const validationSchema = Yup.object().shape({
   productName: Yup.string().required("O nome é obrigatório"),
   description: Yup.string().required("A descrição é obrigatória"),
@@ -23,7 +25,7 @@ interface ProductFormValues {
   brand: string;
   unit: string;
   quantity: string;
-  photo: string;
+  photo: File | null;
   id: string;
 }
 
@@ -32,6 +34,9 @@ export const Product = () => {
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [progress, setProgress] = useState(0);
   const [productList, setProductList] = useState([]);
+  const [photoURL, setPhotoURL] = useState("");
+
+  const ids = uuidv4().replace(/\D/g, "").slice(0, 4); // Remove todos os não dígitos
 
   const initialValues = {
     productName: "",
@@ -39,16 +44,14 @@ export const Product = () => {
     brand: "",
     unit: "",
     quantity: "",
-    photo: "",
-    id: "",
+    photo: null,
+    id: ids,
   };
 
   useEffect(() => {
     fetchProduct()
       .then((data) => {
         setProductList(data);
-        const newId = (data.length + 1).toString();
-        formikRef.current?.setFieldValue("id", newId);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -64,7 +67,8 @@ export const Product = () => {
     );
 
     if (!isProductExists) {
-      createProduct([...productList, product]);
+      const updatedProduct = { ...product, photo: photoURL };
+      createProduct([...productList, updatedProduct]);
       setShowMessage("success");
       setShowProgressBar(true);
 
@@ -150,7 +154,13 @@ export const Product = () => {
                   id="photo"
                   name="photo"
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setFieldValue("photo", event.currentTarget.files?.[0]);
+                    const file = event.currentTarget.files?.[0];
+                    setFieldValue("photo", file);
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      setPhotoURL(e.target?.result as string);
+                    };
+                    reader.readAsDataURL(file!);
                   }}
                 />
 

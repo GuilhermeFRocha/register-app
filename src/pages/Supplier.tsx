@@ -1,8 +1,7 @@
 import { Navbar } from "../components/Navbar";
 import { Container } from "../styles/home";
 import { Formik, Field, Form, FormikProps } from "formik";
-import { useContext, useEffect, useState, useRef } from "react";
-import { MyContext } from "../Context/MyContext";
+import { useEffect, useState, useRef } from "react";
 import {
   ButtonSupplier,
   CardFormSupplier,
@@ -14,8 +13,8 @@ import {
 } from "../styles/supplier";
 import * as Yup from "yup";
 import { Popup } from "../components/Popup";
-import { database, ref, get } from "../services/firebase";
-import { fetchProduct, fetchSupply } from "../services/api";
+import { createSupply, fetchProduct, fetchSupply } from "../services/api";
+import { Skeleton } from "@mui/material";
 
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required("O nome é obrigatório"),
@@ -49,11 +48,12 @@ interface FormValues {
 }
 
 export const Supplier = () => {
-  // const { productList, FornList, setFornList } = useContext(MyContext);
   const [showMessage, setShowMessage] = useState("");
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [productLists, setProductList] = useState([]);
+  const [productList, setProductList] = useState<Product[]>([]);
+  const [supplyList, setSupplyList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const initialValues = {
     nome: "",
@@ -67,40 +67,20 @@ export const Supplier = () => {
 
   const formikRef = useRef<FormikProps<FormValues>>(null);
 
-  const handleSubmit = (values: FormValues) => {
-    // const isProductExists = FornList.some(
-    //   (item) => item.nome === values.nome || item.cnpj === values.cnpj
-    // );
+  useEffect(() => {
+    fetchSupply()
+      .then((data) => {
+        setSupplyList(data);
+        setLoading(false);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
-    // if (!isProductExists && values.products.length > 0) {
-    // const selectedProducts = values.products.map((productId: string) => {
-    //   const product = productList.find((p) => p.id === productId);
-    //   return {
-    //     id: productId,
-    //     productName: product.productName,
-    //     description: product.description,
-    //     photo: product.photo,
-    //   };
-    // });
-
-    //   const updatedValues = { ...values, products: selectedProducts };
-    //   setFornList([...FornList, updatedValues]);
-    //   setShowMessage("success");
-    //   setShowProgressBar(true);
-    //   if (formikRef.current) {
-    //     formikRef.current.resetForm();
-    //   }
-    // } else {
-    //   setShowMessage("error");
-    //   setShowProgressBar(true);
-    // }
-
-    setTimeout(() => {
-      setShowMessage("");
-      setShowProgressBar(false);
-      setProgress(0);
-    }, 3000);
-  };
+  useEffect(() => {
+    fetchProduct()
+      .then((data) => setProductList(data))
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
@@ -136,11 +116,42 @@ export const Supplier = () => {
     return formattedcep;
   }
 
-  useEffect(() => {
-    fetchProduct()
-      .then((data) => setProductList(data))
-      .catch((error) => console.error(error));
-  }, []);
+  const handleSubmit = (values: FormValues) => {
+    const isProductExists = supplyList.some(
+      (item: any) => item.nome === values.nome || item.cnpj === values.cnpj
+    );
+
+    if (!isProductExists && values.products.length > 0) {
+      const selectedProducts = values.products.map((productId: string) => {
+        const product = productList.find((p: Product) => p.id === productId);
+        return {
+          id: productId,
+          productName: product!.productName,
+          description: product!.description,
+          photo: product!.photo,
+        };
+      });
+
+      const updatedValues = { ...values, products: selectedProducts };
+      createSupply([...supplyList, updatedValues]);
+      setShowMessage("success");
+      setShowProgressBar(true);
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
+    } else {
+      setShowMessage("error");
+      setShowProgressBar(true);
+    }
+
+    setTimeout(() => {
+      setShowMessage("");
+      setShowProgressBar(false);
+      setProgress(0);
+    }, 3000);
+  };
+
+  console.log(loading);
 
   return (
     <Container>
@@ -216,22 +227,59 @@ export const Supplier = () => {
                 <h3 className="titleSupplier">Adicionar Produtos</h3>
 
                 <ProductSupplier>
-                  {productLists.map((product: Product) => (
-                    <div key={product.id} className="productSupplier">
-                      <h3>{product.productName}</h3>
-                      <img src={product.photo} alt="produto" />
-                      <p>{product.description}</p>
-                      <div style={{ border: "none" }}>
-                        <Field
-                          type="checkbox"
-                          id={product.id}
-                          name="products"
-                          value={product.id}
+                  {loading ? (
+                    <>
+                      <div>
+                        <Skeleton variant="text" width={250} height={34} />
+                        <Skeleton
+                          variant="rectangular"
+                          width={250}
+                          height={215}
                         />
-                        <label htmlFor={product.productId}>Selecionar</label>
+                        <Skeleton variant="text" width={250} height={80} />
+                        <Skeleton variant="text" width={250} height={40} />
                       </div>
-                    </div>
-                  ))}
+
+                      <div>
+                        <Skeleton variant="text" width={250} height={34} />
+                        <Skeleton
+                          variant="rectangular"
+                          width={250}
+                          height={215}
+                        />
+                        <Skeleton variant="text" width={250} height={80} />
+                        <Skeleton variant="text" width={250} height={40} />
+                      </div>
+
+                      <div>
+                        <Skeleton variant="text" width={250} height={34} />
+                        <Skeleton
+                          variant="rectangular"
+                          width={250}
+                          height={215}
+                        />
+                        <Skeleton variant="text" width={250} height={80} />
+                        <Skeleton variant="text" width={250} height={40} />
+                      </div>
+                    </>
+                  ) : (
+                    productList.map((product: Product) => (
+                      <div key={product.id} className="productSupplier">
+                        <h3>{product.productName}</h3>
+                        <img src={product.photo} alt="produto" />
+                        <p>{product.description}</p>
+                        <div style={{ border: "none" }}>
+                          <Field
+                            type="checkbox"
+                            id={product.id}
+                            name="products"
+                            value={product.id}
+                          />
+                          <label htmlFor={product.productId}>Selecionar</label>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </ProductSupplier>
               </ContainerSupplier>
               <ButtonSupplier
