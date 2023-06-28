@@ -8,8 +8,6 @@ import { CardForm, ErrorSend, FormProduct } from "../styles/product";
 import { Popup } from "../components/Popup";
 import { createProduct, fetchProduct } from "../services/api";
 
-import { v4 as uuidv4 } from "uuid";
-
 const validationSchema = Yup.object().shape({
   productName: Yup.string().required("O nome é obrigatório"),
   description: Yup.string().required("A descrição é obrigatória"),

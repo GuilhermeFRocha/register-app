@@ -49,11 +49,12 @@ export const deleteProduct = async (id: any) => {
 export const updateProduct = async (supplieData: any) => {
   console.log(supplieData);
 
-  // const docRef = doc(db, "produtos", supplieData.id);
+  const docRef = doc(db, "produtos", supplieData.id);
 
-  // try {
-  //   await updateDoc(docRef, supplieData);
-  // } catch (error) {
-  //   console.error("Erro ao adicionar objeto:", error);
-  // }
+  try {
+    await updateDoc(docRef, supplieData);
+    window.location.reload();
+  } catch (error) {
+    console.error("Erro ao adicionar objeto:", error);
+  }
 };
