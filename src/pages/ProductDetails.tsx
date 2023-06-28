@@ -1,6 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteProduct, fetchProduct } from "../services/api";
+import { deleteProduct, fetchProduct, updateProduct } from "../services/api";
 import "../styles/productDetails";
 import {
   BackScreen,
@@ -13,30 +13,38 @@ import { BsBoxArrowLeft } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
+export const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
 export const ProductDetails = () => {
   const [productList, setProductList] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     fetchProduct()
-      .then((data) => setProductList(data))
+      .then((data: any) => setProductList(data))
       .catch((error) => console.error(error));
   }, []);
-
-  const { id } = useParams();
 
   const product: any = productList.find(
     (fornecedor: any) => fornecedor.id === id
   );
 
-  const index = productList.findIndex(
-    (fornecedor: any) => fornecedor.id === id
-  );
-
-  function handleEditProduct() {}
+  function handleEditProduct() {
+    updateProduct(product);
+  }
 
   async function handleDeleteProduct() {
-    await deleteProduct(product.id);
+    deleteProduct(product.id);
     navigate("/");
   }
 
@@ -55,7 +63,7 @@ export const ProductDetails = () => {
                 <BiEdit />
                 Editar
               </button>
-              <button onClick={() => handleDeleteProduct()}>
+              <button onClick={handleDeleteProduct}>
                 <MdDelete />
                 Deletar
               </button>

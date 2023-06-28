@@ -69,7 +69,7 @@ export const Supplier = () => {
 
   useEffect(() => {
     fetchSupply()
-      .then((data) => {
+      .then((data: any) => {
         setSupplyList(data);
         setLoading(false);
       })
@@ -132,8 +132,8 @@ export const Supplier = () => {
         };
       });
 
-      const updatedValues = { ...values, products: selectedProducts };
-      createSupply([...supplyList, updatedValues]);
+      const updatedSupplie = { ...values, products: selectedProducts };
+      createSupply(updatedSupplie);
       setShowMessage("success");
       setShowProgressBar(true);
       if (formikRef.current) {
@@ -150,8 +150,6 @@ export const Supplier = () => {
       setProgress(0);
     }, 3000);
   };
-
-  console.log(loading);
 
   return (
     <Container>

@@ -10,11 +10,11 @@ export function Product() {
 
   useEffect(() => {
     fetchSupply()
-      .then((data) => setSupplyList(data))
+      .then((data: any) => setSupplyList(data))
       .catch((error) => console.error(error));
 
     fetchProduct()
-      .then((data) => {
+      .then((data: any) => {
         setProductList(data);
         setLoading(false);
       })
@@ -76,9 +76,9 @@ export function Product() {
           </>
         ) : (
           supplyList.map((supp: any) => (
-            <div key={supp.nome}>
+            <div key={supp.id}>
               <p>{supp.nome}</p>
-              <span>{`Produtos: ${supp.products?.length || 0}`}</span>
+              <span>{`Produtos: ${supp.products.length || 0}`}</span>
             </div>
           ))
         )}

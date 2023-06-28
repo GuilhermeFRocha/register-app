@@ -26,7 +26,6 @@ interface ProductFormValues {
   unit: string;
   quantity: string;
   photo: File | null;
-  id: string;
 }
 
 export const Product = () => {
@@ -36,8 +35,6 @@ export const Product = () => {
   const [productList, setProductList] = useState([]);
   const [photoURL, setPhotoURL] = useState("");
 
-  const ids = uuidv4().replace(/\D/g, "").slice(0, 4); // Remove todos os não dígitos
-
   const initialValues = {
     productName: "",
     description: "",
@@ -45,12 +42,11 @@ export const Product = () => {
     unit: "",
     quantity: "",
     photo: null,
-    id: ids,
   };
 
   useEffect(() => {
     fetchProduct()
-      .then((data) => {
+      .then((data: any) => {
         setProductList(data);
       })
       .catch((error) => console.error(error));
@@ -68,7 +64,7 @@ export const Product = () => {
 
     if (!isProductExists) {
       const updatedProduct = { ...product, photo: photoURL };
-      createProduct([...productList, updatedProduct]);
+      createProduct(updatedProduct);
       setShowMessage("success");
       setShowProgressBar(true);
 
