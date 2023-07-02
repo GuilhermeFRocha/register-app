@@ -83,6 +83,7 @@ export const ContainerSupp = styled.div`
   div {
     display: flex;
     border: 2px solid black;
+    align-items: center;
     justify-content: space-between;
     border-radius: 15px;
     padding: 10px;
@@ -95,7 +96,24 @@ export const ContainerSupp = styled.div`
     span {
       color: black;
       font-size: 14px;
-
     }
+  }
+`;
+
+export const LinkSupply = styled(Link)`
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.37) 0px 2px 5px 0px;
+  border-radius: 5px;
+  padding: 5px 5px 4px 5px;
+  color: rgb(0, 0, 0);
+  background-color: rgb(240 240 240);
+
+  :hover {
+    opacity: 0.8;
+    transition: all 0.2s ease 0s;
   }
 `;

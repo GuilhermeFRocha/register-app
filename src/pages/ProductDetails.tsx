@@ -1,6 +1,10 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteProduct, fetchProduct } from "../services/api";
+import {
+  deleteProduct,
+  deleteProductSupply,
+  fetchProduct,
+} from "../services/api";
 import "../styles/productDetails";
 import {
   BackScreen,
@@ -14,8 +18,9 @@ import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
 import Modal from "react-modal";
-import { Form } from "../components/Form";
+import { FormEditProduct } from "../components/FormEditProduct";
 import { Skeleton } from "@mui/material";
+import { ModalConfirmation } from "../components/ModalConfirmation";
 
 export const customStyles = {
   content: {
@@ -32,6 +37,7 @@ export const customStyles = {
 export const ProductDetails = () => {
   const [productList, setProductList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalConOpen, setModalConOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -55,8 +61,14 @@ export const ProductDetails = () => {
   }
 
   async function handleDeleteProduct() {
+    setModalConOpen(!modalConOpen);
+  }
+
+  function handleConfirm() {
+    deleteProductSupply(product.id);
     deleteProduct(product.id);
     navigate("/");
+    window.location.reload();
   }
 
   return (
@@ -158,8 +170,15 @@ export const ProductDetails = () => {
         style={customStyles}
         contentLabel="Exemplo Modal"
       >
-        <Form product={product} />
+        <FormEditProduct product={product} />
       </Modal>
+
+      <ModalConfirmation
+        modalisOpen={modalConOpen}
+        setisClose={setModalConOpen}
+        handleConfirm={handleConfirm}
+        children={"excluir"}
+      />
     </>
   );
 };

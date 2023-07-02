@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
-import { ContainerProd, ContainerSupp, LinkProduct, ListProd } from "./style";
+import {
+  ContainerProd,
+  ContainerSupp,
+  LinkProduct,
+  LinkSupply,
+  ListProd,
+} from "./style";
 import { fetchSupply, fetchProduct } from "../../services/api";
 import { Skeleton } from "@mui/material";
+import { BiEdit } from "react-icons/bi";
 
 export function Product() {
   const [supplyList, setSupplyList] = useState([]);
@@ -78,7 +85,13 @@ export function Product() {
           supplyList.map((supp: any) => (
             <div key={supp.id}>
               <p>{supp.nome}</p>
-              <span>{`Produtos: ${supp.products.length || 0}`}</span>
+
+              <p style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <span>{`Produtos: ${supp.products.length || 0}`}</span>
+                <LinkSupply to={`/fornecedor/${supp.id}`}>
+                  <BiEdit />
+                </LinkSupply>
+              </p>
             </div>
           ))
         )}
