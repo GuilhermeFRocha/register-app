@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchSupply } from "../services/api";
-import { Link, useParams } from "react-router-dom";
-import { Skeleton } from "@mui/material";
+import { deleteSupply, fetchSupply } from "../services/api";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
@@ -10,11 +9,28 @@ import {
   ContentProdSupp,
   NavScreen,
 } from "../styles/supplierDetails";
+import { ModalConfirmation } from "../components/ModalConfirmation";
+import Modal from "react-modal";
+import { FormEditSupplier } from "../components/FormEditSupplier";
+
+export const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    padding: 0,
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 export const SupplierDetails = () => {
   const [supplyList, setSupplyList] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalConOpen, setModalConOpen] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,6 +46,23 @@ export const SupplierDetails = () => {
     (fornecedor: any) => fornecedor.id === id
   );
 
+  function handleEditSupply() {
+    setModalIsOpen(!modalIsOpen);
+  }
+
+  function handleDeleteSupply() {
+    setModalConOpen(!modalConOpen);
+  }
+
+  function handleConfirm() {
+    deleteSupply(supply.id);
+    navigate("/");
+  }
+
+  function handleSubmit() {
+    console.log("ok");
+  }
+
   return (
     <>
       {supply && (
@@ -41,11 +74,11 @@ export const SupplierDetails = () => {
             </Link>
 
             <div>
-              <button>
+              <button onClick={handleEditSupply}>
                 <BiEdit />
                 Editar
               </button>
-              <button>
+              <button onClick={handleDeleteSupply}>
                 <MdDelete />
                 Deletar
               </button>
@@ -106,10 +139,26 @@ export const SupplierDetails = () => {
               )}
             </ContentProdSupp>
           </ContainerSuppDetails>
-
-          <div></div>
         </>
       )}
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => {
+          setModalIsOpen(false);
+        }}
+        style={customStyles}
+        contentLabel="Exemplo Modal"
+      >
+        <FormEditSupplier supply={supply} />
+      </Modal>
+
+      <ModalConfirmation
+        modalisOpen={modalConOpen}
+        setisClose={setModalConOpen}
+        handleConfirm={handleConfirm}
+        children={"excluir"}
+      />
     </>
   );
 };

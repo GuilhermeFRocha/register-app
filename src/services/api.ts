@@ -54,10 +54,31 @@ export const deleteProduct = async (id: any) => {
   }
 };
 
+export const deleteSupply = async (id: any) => {
+  const docRef = doc(db, "fornecedores", id);
+  try {
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Erro ao deletar produto.", error);
+  }
+};
+
 export const updateProduct = async (supplieData: any) => {
   const docRef = doc(db, "produtos", supplieData.id);
   try {
     await updateDoc(docRef, supplieData);
+    window.location.reload();
+  } catch (error) {
+    console.error("Erro ao atualizar produto.", error);
+  }
+};
+
+export const updateSupply = async (supplyData: any) => {
+  const docRef = doc(db, "fornecedores", supplyData.id);
+  console.log(supplyData);
+
+  try {
+    await updateDoc(docRef, supplyData);
     window.location.reload();
   } catch (error) {
     console.error("Erro ao atualizar produto.", error);

@@ -78,7 +78,7 @@ export const Supplier = () => {
 
   useEffect(() => {
     fetchProduct()
-      .then((data) => setProductList(data))
+      .then((data: any) => setProductList(data))
       .catch((error) => console.error(error));
   }, []);
 
