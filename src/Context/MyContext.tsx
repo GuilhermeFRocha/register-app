@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 interface MyContextType {
-  isOpen: boolean | any;
+  isOpen: any;
   setIsOpen: (value: any) => void;
 }
 
