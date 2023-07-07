@@ -10,6 +10,16 @@ import { fetchSupply, fetchProduct } from "../../services/api";
 import { Skeleton } from "@mui/material";
 import { BiEdit } from "react-icons/bi";
 
+interface ProductValues {
+  productName: string;
+  description: string;
+  brand: string;
+  unit: string;
+  quantity: string;
+  photo: File | null;
+  id: string;
+}
+
 export function Product() {
   const [supplyList, setSupplyList] = useState([]);
   const [productList, setProductList] = useState([]);

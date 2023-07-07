@@ -2,7 +2,13 @@ import { LinearProgress } from "@mui/material";
 import { AiFillCheckCircle, AiFillExclamationCircle } from "react-icons/ai";
 import { PopupMessage } from "./style";
 
-export function Popup({ messageType, progress, title }: any) {
+interface PropsPopUp {
+  messageType: string;
+  title: string;
+  progress: number | null;
+}
+
+export function Popup({ messageType, progress, title }: PropsPopUp) {
   return (
     <div>
       {messageType === "success" && (

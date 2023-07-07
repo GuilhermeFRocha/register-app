@@ -9,8 +9,8 @@ export const NavbarContainer = styled.div<NavbarProps>`
   min-height: 100vh;
   box-shadow: 5px 0px 10px 0px rgba(0, 0, 0, 0.37);
   position: relative;
-  min-width: ${({ isOpen }: any) => (isOpen ? "200px" : "20px")};
-  width: ${({ isOpen }: any) => (isOpen ? "200px" : "20px")};
+  min-width: ${({ isOpen }) => (isOpen ? "200px" : "20px")};
+  width: ${({ isOpen }) => (isOpen ? "200px" : "20px")};
   transition: all 0.3s ease-in-out;
 
   img {

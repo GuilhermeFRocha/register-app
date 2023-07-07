@@ -29,7 +29,7 @@ export const Navbar = () => {
     localStorage.setItem("navbarIsOpen", isOpen);
   }, [isOpen]);
 
-  const isActivePage = (path: any) => {
+  const isActivePage = (path: string) => {
     return location.pathname === path;
   };
 

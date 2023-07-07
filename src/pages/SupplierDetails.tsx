@@ -25,6 +25,17 @@ export const customStyles = {
   },
 };
 
+interface SupplyForm {
+  nome: string;
+  cnpj: string;
+  cep: string;
+  street: string;
+  state: string;
+  city: string;
+  id: string;
+  products: string[];
+}
+
 export const SupplierDetails = () => {
   const [supplyList, setSupplyList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,10 +68,6 @@ export const SupplierDetails = () => {
   function handleConfirm() {
     deleteSupply(supply.id);
     navigate("/");
-  }
-
-  function handleSubmit() {
-    console.log("ok");
   }
 
   return (

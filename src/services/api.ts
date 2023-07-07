@@ -75,8 +75,6 @@ export const updateProduct = async (supplieData: any) => {
 
 export const updateSupply = async (supplyData: any) => {
   const docRef = doc(db, "fornecedores", supplyData.id);
-  console.log(supplyData);
-
   try {
     await updateDoc(docRef, supplyData);
     window.location.reload();
@@ -87,7 +85,6 @@ export const updateSupply = async (supplyData: any) => {
 
 export const deleteProductSupply = async (productSupply: any) => {
   const usersCollection = collection(db, "fornecedores");
-
   try {
     const querySnapshot = await getDocs(usersCollection);
     querySnapshot.forEach(async (doc) => {

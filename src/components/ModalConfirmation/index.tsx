@@ -1,12 +1,20 @@
 import Modal from "react-modal";
 import { ModalButton, customStyles } from "./styles";
+import { ReactNode } from "react";
+
+interface ModalConfirmationProps {
+  modalisOpen: boolean;
+  setisClose: (value: boolean) => void;
+  handleConfirm: () => void;
+  children: ReactNode;
+}
 
 export const ModalConfirmation = ({
   modalisOpen,
   setisClose,
   handleConfirm,
   children,
-}: any) => {
+}: ModalConfirmationProps) => {
   return (
     <Modal
       isOpen={modalisOpen}

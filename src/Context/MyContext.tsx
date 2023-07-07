@@ -1,9 +1,8 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 interface MyContextType {
-  isOpen: any;
+  isOpen: boolean;
   setIsOpen: (value: any) => void;
-  // handleSetProductList: (product: any) => void;
 }
 
 export const MyContext = createContext<MyContextType>({} as MyContextType);

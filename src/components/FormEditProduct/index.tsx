@@ -16,6 +16,17 @@ const validationSchema = Yup.object().shape({
 });
 
 interface ProductFormValues {
+  product: {
+    productName: string;
+    description: string;
+    brand: string;
+    unit: string;
+    quantity: string;
+    photo: File | null;
+  };
+}
+
+interface NewProductFormValues {
   productName: string;
   description: string;
   brand: string;
@@ -24,15 +35,15 @@ interface ProductFormValues {
   photo: File | null;
 }
 
-export const FormEditProduct = ({ product }: any) => {
+export const FormEditProduct = ({ product }: ProductFormValues) => {
   const [photoURL, setPhotoURL] = useState("");
   const [loading, setLoading] = useState(true);
   const [modalConOpen, setModalConOpen] = useState(false);
   const [newproduct, setNewProduct] = useState({});
 
-  const formikRef = useRef<FormikProps<ProductFormValues>>(null);
+  const formikRef = useRef<FormikProps<NewProductFormValues>>(null);
 
-  function handleSubmit(newproduct: any) {
+  function handleSubmit(newproduct: NewProductFormValues) {
     setModalConOpen(!modalConOpen);
     setNewProduct(newproduct);
   }

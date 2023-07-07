@@ -1,4 +1,4 @@
-import { Field, Form, Formik, FormikProps } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import React, { useState, useEffect } from "react";
 import {
@@ -18,6 +18,17 @@ interface Product {
   productName: string;
   description: string;
   photo: string;
+}
+
+interface SupplyForm {
+  nome: string;
+  cnpj: string;
+  cep: string;
+  street: string;
+  state: string;
+  city: string;
+  id: string;
+  products: string[];
 }
 
 export const FormEditSupplier = ({ supply }: any) => {
@@ -90,8 +101,6 @@ export const FormEditSupplier = ({ supply }: any) => {
 
   function handleConfirm() {
     const updatedSupply = { ...supply, ...newSupply };
-    console.log(updatedSupply);
-
     updateSupply(updatedSupply);
   }
 
