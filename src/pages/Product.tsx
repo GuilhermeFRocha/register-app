@@ -54,7 +54,7 @@ export const Product = () => {
 
   const handleSubmit = (product: ProductFormValues) => {
     const isProductExists = productList.some(
-      (item: any) =>
+      (item: ProductFormValues) =>
         item.productName === product.productName ||
         item.description === product.description ||
         item.photo === product.photo

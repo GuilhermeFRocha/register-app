@@ -26,7 +26,7 @@ export const Navbar = () => {
   }, [setIsOpen]);
 
   useEffect(() => {
-    localStorage.setItem("navbarIsOpen", isOpen);
+    localStorage.setItem("navbarIsOpen", isOpen.toString());
   }, [isOpen]);
 
   const isActivePage = (path: string) => {

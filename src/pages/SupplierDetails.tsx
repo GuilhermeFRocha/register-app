@@ -25,6 +25,13 @@ export const customStyles = {
   },
 };
 
+interface ProductsSupply {
+  id: string;
+  productName: string;
+  description: string;
+  photo: string;
+}
+
 interface SupplyForm {
   nome: string;
   cnpj: string;
@@ -53,8 +60,8 @@ export const SupplierDetails = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const supply: any = supplyList.find(
-    (fornecedor: any) => fornecedor.id === id
+  const supply: SupplyForm | any = supplyList.find(
+    (fornecedor: SupplyForm) => fornecedor.id === id
   );
 
   function handleEditSupply() {
@@ -126,7 +133,7 @@ export const SupplierDetails = () => {
 
             <ContentProdSupp>
               {supply.products.length > 0 ? (
-                supply.products.map((item: any) => (
+                supply.products.map((item: ProductsSupply) => (
                   <div>
                     <h2>{item.productName}</h2>
                     <img src={item.photo} />

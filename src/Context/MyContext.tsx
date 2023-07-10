@@ -1,13 +1,17 @@
 import { createContext, useState } from "react";
 
 interface MyContextType {
-  isOpen: any;
-  setIsOpen: (value: any) => void;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
 }
 
 export const MyContext = createContext<MyContextType>({} as MyContextType);
 
-export const MyContextProvider = ({ children }: any) => {
+export const MyContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

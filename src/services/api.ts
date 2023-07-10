@@ -1,6 +1,32 @@
 import { addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db, collection, getDocs } from "../services/firebase";
 
+interface ProductPropsValues {
+  productName: string;
+  description: string;
+  brand: string;
+  unit: string;
+  quantity: string;
+  photo: string;
+}
+
+interface Product {
+  id: string;
+  productName: string;
+  description: string;
+  photo: string;
+}
+
+interface SupplyPropsValues {
+  nome: string;
+  cnpj: string;
+  cep: string;
+  street: string;
+  state: string;
+  city: string;
+  products: Product[];
+}
+
 export const fetchSupply = async () => {
   const usersCollection = collection(db, "fornecedores");
   try {
@@ -27,7 +53,7 @@ export const fetchProduct = async () => {
   }
 };
 
-export const createSupply = async (supplyData: any) => {
+export const createSupply = async (supplyData: SupplyPropsValues) => {
   const suppliersCollection = collection(db, "fornecedores");
   try {
     await addDoc(suppliersCollection, { ...supplyData });
@@ -36,7 +62,7 @@ export const createSupply = async (supplyData: any) => {
   }
 };
 
-export const createProduct = async (productData: any) => {
+export const createProduct = async (productData: ProductPropsValues) => {
   const dbRef = collection(db, "produtos");
   try {
     await addDoc(dbRef, { ...productData });
@@ -45,7 +71,7 @@ export const createProduct = async (productData: any) => {
   }
 };
 
-export const deleteProduct = async (id: any) => {
+export const deleteProduct = async (id: string) => {
   const docRef = doc(db, "produtos", id);
   try {
     await deleteDoc(docRef);
@@ -54,19 +80,20 @@ export const deleteProduct = async (id: any) => {
   }
 };
 
-export const deleteSupply = async (id: any) => {
+export const deleteSupply = async (id: string) => {
   const docRef = doc(db, "fornecedores", id);
   try {
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Erro ao deletar produto.", error);
   }
+  window.location.reload();
 };
 
-export const updateProduct = async (supplieData: any) => {
-  const docRef = doc(db, "produtos", supplieData.id);
+export const updateProduct = async (productData: any) => {
+  const docRef = doc(db, "produtos", productData.id);
   try {
-    await updateDoc(docRef, supplieData);
+    await updateDoc(docRef, productData);
     window.location.reload();
   } catch (error) {
     console.error("Erro ao atualizar produto.", error);
@@ -97,4 +124,5 @@ export const deleteProductSupply = async (productSupply: any) => {
   } catch (error) {
     console.error("Erro ao deletar produto.", error);
   }
+  window.location.reload();
 };

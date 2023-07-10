@@ -118,7 +118,8 @@ export const Supplier = () => {
 
   const handleSubmit = (values: FormValues) => {
     const isProductExists = supplyList.some(
-      (item: any) => item.nome === values.nome || item.cnpj === values.cnpj
+      (item: FormValues) =>
+        item.nome === values.nome || item.cnpj === values.cnpj
     );
 
     if (!isProductExists && values.products.length > 0) {

@@ -20,18 +20,21 @@ interface Product {
   photo: string;
 }
 
-interface SupplyForm {
+interface ProductSupply {
   nome: string;
   cnpj: string;
   cep: string;
   street: string;
   state: string;
   city: string;
-  id: string;
-  products: string[];
+  products: Product[];
 }
 
-export const FormEditSupplier = ({ supply }: any) => {
+interface FormEditSupplierProps {
+  supply: ProductSupply;
+}
+
+export const FormEditSupplier = ({ supply }: FormEditSupplierProps) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [modalConOpen, setModalConOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -94,7 +97,7 @@ export const FormEditSupplier = ({ supply }: any) => {
       .catch((error) => console.error(error));
   }, []);
 
-  function handleSubmit(newSupply: any) {
+  function handleSubmit(newSupply: ProductSupply) {
     setModalConOpen(!modalConOpen);
     setNewSupply(newSupply);
   }

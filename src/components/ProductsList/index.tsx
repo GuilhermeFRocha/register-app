@@ -16,8 +16,19 @@ interface ProductValues {
   brand: string;
   unit: string;
   quantity: string;
-  photo: File | null;
+  photo: undefined | string;
   id: string;
+}
+
+interface FormValues {
+  nome: string;
+  cnpj: string;
+  cep: string;
+  street: string;
+  state: string;
+  city: string;
+  id: string;
+  products: string[];
 }
 
 export function Product() {
@@ -68,7 +79,7 @@ export function Product() {
             </div>
           </>
         ) : (
-          productList.map((product: any) => (
+          productList.map((product: ProductValues) => (
             <LinkProduct to={`/product/${product.id}`} key={product.id}>
               <h2>{product.productName}</h2>
               <img src={product.photo} alt="" />
@@ -92,7 +103,7 @@ export function Product() {
             <Skeleton variant="text" width={"100%"} height={40} />
           </>
         ) : (
-          supplyList.map((supp: any) => (
+          supplyList.map((supp: FormValues) => (
             <div key={supp.id}>
               <p>{supp.nome}</p>
 

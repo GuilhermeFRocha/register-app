@@ -22,6 +22,16 @@ import { FormEditProduct } from "../components/FormEditProduct";
 import { Skeleton } from "@mui/material";
 import { ModalConfirmation } from "../components/ModalConfirmation";
 
+interface ProductFormValues {
+  productName: string;
+  description: string;
+  brand: string;
+  unit: string;
+  quantity: string;
+  id: string;
+  photo: File | null;
+}
+
 export const customStyles = {
   content: {
     top: "50%",
@@ -52,21 +62,21 @@ export const ProductDetails = () => {
       .catch((error) => console.error(error));
   }, []);
 
-  const product: any = productList.find(
-    (fornecedor: any) => fornecedor.id === id
+  const product: ProductFormValues | any = productList.find(
+    (fornecedor: ProductFormValues) => fornecedor.id === id
   );
 
   function handleEditProduct() {
     setModalIsOpen(!modalIsOpen);
   }
 
-  async function handleDeleteProduct() {
+  function handleDeleteProduct() {
     setModalConOpen(!modalConOpen);
   }
 
-  function handleConfirm() {
-    deleteProductSupply(product.id);
-    deleteProduct(product.id);
+  async function handleConfirm() {
+    await deleteProductSupply(product.id);
+    await deleteProduct(product.id);
     navigate("/");
     window.location.reload();
   }
@@ -154,7 +164,7 @@ export const ProductDetails = () => {
                 </FlagsDetails>
                 <FlagsDetails>
                   <strong>Quantidade: </strong>
-                  <p>{product.unit}</p>
+                  <p>{product.quantity}</p>
                 </FlagsDetails>
               </DescDetails>
             </ContainerProdDetails>
